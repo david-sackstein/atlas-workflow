@@ -1,7 +1,9 @@
 import { Machine } from 'xstate/lib/Machine';
-import { WorkflowContext, WorkflowEvent, WorkflowSchema } from './workflow-machine-schema';
+import { WorkflowContext } from './workflow-machine-context';
+import { WorkflowEvent } from './workflow-machine-events';
+import { WorkflowSchema } from './workflow-machine-schema';
 
-const workflowMachine = Machine<WorkflowContext, WorkflowSchema, WorkflowEvent>({
+export const workflowMachine = Machine<WorkflowContext, WorkflowSchema, WorkflowEvent>({
   id: 'workflow',
   initial: 'init',
   context: {
@@ -23,14 +25,14 @@ const workflowMachine = Machine<WorkflowContext, WorkflowSchema, WorkflowEvent>(
           },
           {
             target: 'ready_for_bizua',
-            cond: 'not_general_info'
+            cond: 'is_not_general_info'
           }
         ]
       }
     },
     showing_peroot_shtarot: {
       on: {
-        PIRUT_SHTAROT_COMPLETED: 'data_arrived'
+        PERUT_SHTAROT_COMPLETED: 'data_arrived'
       }
     },
     additional_data_arrived: {
@@ -59,7 +61,7 @@ const workflowMachine = Machine<WorkflowContext, WorkflowSchema, WorkflowEvent>(
         ]
       }
     },
-    ready_to_print: {
+    ready_for_print: {
       on: {
         PRINT_COMPLETE: 'end'
       }
